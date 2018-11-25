@@ -27,17 +27,29 @@ resource "packet_device" "vmonpacket" {
   billing_cycle    = "hourly"
   project_id       = "${var.projectid}"
 
-  user_data = <<SCRIPT
-#!/bin/bash
+  connection {
+    type        = "ssh"
+    user        = "root"
+    private_key = "${file("~/.ssh/id_rsa")}"
+  }
+
+  provisioner "remote-exec" {
+    inline = <<EOF
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
+apt-get dist-upgrade -y
 apt-get install -y language-pack-en sysstat vim htop git
-
 git clone https://github.com/kikitux/nomad-in-a-box /root/nomad-in-a-box
 cd /root/nomad-in-a-box
 bash scripts/before.sh
+sleep 2 && systemctl kexec &
+EOF
+  }
 
-shutdown -r 1
-
-SCRIPT
+  provisioner "remote-exec" {
+    inline = <<EOF
+cd /root/nomad-in-a-box
+bash scripts/provision.sh
+EOF
+  }
 }

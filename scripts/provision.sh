@@ -156,6 +156,17 @@ which nginx &>/dev/null || {
 cp conf/nginx.conf /etc/nginx/sites-enabled/default
 service nginx restart
 
+[ -f /usr/local/bin/consul-template ] || {
+  wget -O /tmp/consul-template.zip https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.zip
+  unzip -d /usr/local/bin consul-template.zip
+  # chmod +x consul-template
+}
+
+cp -ap conf/consul-template /etc/
+cp conf/consul-template.service /etc/systemd/system/consul-template.service
+systemctl enable consul-template.service
+systemctl start consul-template.service
+
 # base-client
 s=base-client
 lxc info ${s} &>/dev/null || {
