@@ -31,13 +31,13 @@ resource "packet_device" "vmonpacket" {
 #!/bin/bash
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install git -y
+apt-get install -y language-pack-en sysstat vim htop git
+
 git clone https://github.com/kikitux/nomad-in-a-box /root/nomad-in-a-box
 cd /root/nomad-in-a-box
 bash scripts/before.sh
+
+shutdown -r 1
+
 SCRIPT
 }
-
-#output "root_pw" {
-#  value = "${data.packet_device.vmonpacket.root_passsword}"
-#}
