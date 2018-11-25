@@ -10,7 +10,9 @@ vagrant up
 Then you can reach the services at
 
 consul http://localhost:8500	-> consul1
+
 nomad http://localhost:4646	-> nomad1
+
 vault http://localhost:8200 	-> vault1
 
 ### On packet.net
@@ -23,22 +25,24 @@ terraform apply
 Then in the output will be the aliases you can use to reach each service.
 
 - consul
-	consul1 = http://consul1.n.n.n.n.xip.io
-	consul2 = http://consul2.n.n.n.n.xip.io
-	consul3 = http://consul3.n.n.n.n.xip.io
+	- consul1 = http://consul1.n.n.n.n.xip.io
+	- consul2 = http://consul2.n.n.n.n.xip.io
+	- consul3 = http://consul3.n.n.n.n.xip.io
 
 - nomad
-	nomad1 = http://nomad1.n.n.n.n.xip.io
-	nomad2 = http://nomad2.n.n.n.n.xip.io
-	nomad3 = http://nomad3.n.n.n.n.xip.io
+	- nomad1 = http://nomad1.n.n.n.n.xip.io
+	- nomad2 = http://nomad2.n.n.n.n.xip.io
+	- nomad3 = http://nomad3.n.n.n.n.xip.io
 
 - vault
-	vault1 = http://vault1.n.n.n.n.xip.io
+	- vault1 = http://vault1.n.n.n.n.xip.io
 
 You can reach the services also on the default port like in the development box
 
 consul http://n.n.n.n:8500	-> consul1
+
 nomad http://n.n.n.n:4646	-> nomad1
+
 vault http://n.n.n.n:8200 	-> vault1
 
 ## description
