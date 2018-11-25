@@ -18,17 +18,17 @@ vault http://localhost:8200 	-> vault1
 To reach each of the individual nodes, you can use:
 
 - consul
-	- consul1 = http://consul1.127.0.0.1.xip.io
-	- consul2 = http://consul2.127.0.0.1.xip.io
-	- consul3 = http://consul3.127.0.0.1.xip.io
+	- consul1 = http://consul1.127.0.0.1.xip.io:8080
+	- consul2 = http://consul2.127.0.0.1.xip.io:8080
+	- consul3 = http://consul3.127.0.0.1.xip.io:8080
 
 - nomad
-	- nomad1 = http://nomad1.127.0.0.1.xip.io
-	- nomad2 = http://nomad2.127.0.0.1.xip.io
-	- nomad3 = http://nomad3.127.0.0.1.xip.io
+	- nomad1 = http://nomad1.127.0.0.1.xip.io:8080
+	- nomad2 = http://nomad2.127.0.0.1.xip.io:8080
+	- nomad3 = http://nomad3.127.0.0.1.xip.io:8080
 
 - vault
-	- vault1 = http://vault1.127.0.0.1.xip.io
+	- vault1 = http://vault1.127.0.0.1.xip.io:8080
 
 
 ### On packet.net
