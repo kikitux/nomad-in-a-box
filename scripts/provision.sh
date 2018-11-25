@@ -156,8 +156,8 @@ which nginx &>/dev/null || {
 cp conf/nginx.conf /etc/nginx/sites-enabled/default
 service nginx restart
 
-# base_client
-s=base_client
+# base-client
+s=base-client
 lxc info ${s} &>/dev/null || {
   echo "copying base into ${s}"
   lxc copy base ${s}
@@ -170,14 +170,14 @@ lxc info ${s} &>/dev/null || {
   lxc exec ${s} -- apt-get install --no-install-recommends -y default-jre
   lxc exec ${s} -- apt-get clean
   lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hell-world works
-  lxc stop base_client
+  lxc stop base-client
 }
 
 # clients
 for s in client{1..3}; do
   lxc info ${s} &>/dev/null || {
-    echo "copying base_client into ${s}"
-    lxc copy base_client ${s}
+    echo "copying base-client into ${s}"
+    lxc copy base-client ${s}
     lxc start ${s}
     echo sleeping so ${s} get an IP
     sleep 8
@@ -204,8 +204,8 @@ for s in client{1..3}; do
   echo ${s} joining consul servers
   lxc exec ${s} -- consul join ${consul}
 
-  #clients join servers
-  echo ${s} joining nomad servers
-  lxc exec ${s} -- nomad node config -update-servers ${nomad}
+  # #clients join servers
+  # echo ${s} joining nomad servers
+  # lxc exec ${s} -- nomad node config -update-servers ${nomad}
 
 done
