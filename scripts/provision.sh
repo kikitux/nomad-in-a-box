@@ -182,11 +182,6 @@ for s in client{1..3}; do
     echo sleeping so ${s} get an IP
     sleep 8
     lxc list ${s}
-    # lxc exec ${s} -- apt-get update
-    # lxc exec ${s} -- apt-get install --no-install-recommends -y docker.io
-    # lxc exec ${s} -- apt-get install --no-install-recommends -y default-jre
-    # lxc exec ${s} -- apt-get clean
-    # lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hell-world works
 
     consul_client
        
@@ -204,8 +199,4 @@ for s in client{1..3}; do
   echo ${s} joining consul servers
   lxc exec ${s} -- consul join ${consul}
 
-  # #clients join servers
-  # echo ${s} joining nomad servers
-  # lxc exec ${s} -- nomad node config -update-servers ${nomad}
-
-done
+ done
