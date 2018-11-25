@@ -37,7 +37,6 @@ resource "packet_device" "vmonpacket" {
     inline = <<EOF
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get dist-upgrade -y
 apt-get install -y language-pack-en sysstat vim htop git
 git clone https://github.com/kikitux/nomad-in-a-box /root/nomad-in-a-box
 cd /root/nomad-in-a-box

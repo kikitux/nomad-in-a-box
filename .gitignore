@@ -1,5 +1,6 @@
 .vagrant/
 .terraform/
+.terraform.*
 gcp.json
 terraform.tfstate*
 terraform.tfvars
