@@ -10,7 +10,9 @@ vagrant up
 Then you can reach the services at
 
 consul http://localhost:8500	-> consul1
+
 nomad http://localhost:4646	-> nomad1
+
 vault http://localhost:8200 	-> vault1
 
 ### On packet.net
