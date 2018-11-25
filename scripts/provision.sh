@@ -109,14 +109,6 @@ lxc info ${s} &>/dev/null || {
   lxc exec ${s} -- bash /var/tmp/vault.sh
 }
 
-# consul1 to join consul2 and consul3
-echo consul consul1 to join other servers
-lxc exec consul1 -- consul join ${consul}
-
-#vault is a consul client, join servers
-echo ${s} joining consul servers
-lxc exec ${s} -- consul join ${consul}
-
 # create nomad
 for s in nomad{1..3}; do
   lxc info ${s} &>/dev/null || {
@@ -136,9 +128,6 @@ for s in nomad{1..3}; do
     lxc exec ${s} -- bash /var/tmp/nomad.sh
   }
 
-  #nomad is a consul client, join servers
-  echo ${s} joining consul servers
-  lxc exec ${s} -- consul join ${consul}
 done
 
 # nomad1 to join nomad2 and nomad3

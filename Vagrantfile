@@ -6,8 +6,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8500, host: 8500
 
   config.vm.provider "virtualbox" do |v|
-    v.memory = 10240
-    v.cpus = 4
+    v.memory = 2048
+    v.cpus = 2
   end
 
   config.vm.provision "shell", path: "scripts/provision.sh" 
