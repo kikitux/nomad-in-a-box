@@ -1,0 +1,112 @@
+Name: lxd/bridge-dnsmasq
+Template: lxd/bridge-dnsmasq
+Value: 
+Owners: lxd
+
+Name: lxd/bridge-domain
+Template: lxd/bridge-domain
+Value: lxd
+Owners: lxd
+
+Name: lxd/bridge-empty-error
+Template: lxd/bridge-empty-error
+Owners: lxd
+
+Name: lxd/bridge-http-proxy
+Template: lxd/bridge-http-proxy
+Value: false
+Owners: lxd
+
+Name: lxd/bridge-ipv4
+Template: lxd/bridge-ipv4
+Value: true
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv4-address
+Template: lxd/bridge-ipv4-address
+Value: 10.90.217.1
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv4-dhcp-first
+Template: lxd/bridge-ipv4-dhcp-first
+Value: 10.90.217.2
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv4-dhcp-last
+Template: lxd/bridge-ipv4-dhcp-last
+Value: 10.90.217.254
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv4-dhcp-leases
+Template: lxd/bridge-ipv4-dhcp-leases
+Value: 252
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv4-nat
+Template: lxd/bridge-ipv4-nat
+Value: true
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv4-netmask
+Template: lxd/bridge-ipv4-netmask
+Value: 24
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv6
+Template: lxd/bridge-ipv6
+Value: false
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-ipv6-address
+Template: lxd/bridge-ipv6-address
+Value: 
+Owners: lxd
+
+Name: lxd/bridge-ipv6-nat
+Template: lxd/bridge-ipv6-nat
+Value: false
+Owners: lxd
+
+Name: lxd/bridge-ipv6-netmask
+Template: lxd/bridge-ipv6-netmask
+Value: 
+Owners: lxd
+
+Name: lxd/bridge-name
+Template: lxd/bridge-name
+Value: lxdbr0
+Owners: lxd
+Flags: seen
+
+Name: lxd/bridge-random-warning
+Template: lxd/bridge-random-warning
+Owners: lxd
+
+Name: lxd/bridge-upgrade-warning
+Template: lxd/bridge-upgrade-warning
+Owners: lxd
+
+Name: lxd/setup-bridge
+Template: lxd/setup-bridge
+Value: true
+Owners: lxd
+Flags: seen
+
+Name: lxd/update-profile
+Template: lxd/update-profile
+Value: true
+Owners: lxd
+
+Name: lxd/use-existing-bridge
+Template: lxd/use-existing-bridge
+Value: false
+Owners: lxd
+Flags: seen
