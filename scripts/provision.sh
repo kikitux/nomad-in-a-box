@@ -133,7 +133,6 @@ for s in nomad{1..3}; do
     cp conf/nomad.d/server.hcl /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
     cp conf/nomad.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
 
-    lxc exec ${s} -- bash /var/tmp/consul.sh
     lxc exec ${s} -- bash /var/tmp/nomad.sh
   }
 
@@ -201,7 +200,6 @@ for s in client{1..3}; do
     cp conf/nomad.d/client.hcl /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
     cp conf/nomad.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
 
-    lxc exec ${s} -- bash /var/tmp/consul.sh
     lxc exec ${s} -- bash /var/tmp/nomad.sh
     echo sleeping so nomad starts, and scan the drivers
   }

@@ -8,4 +8,3 @@
 
 systemctl enable consul.service
 systemctl start consul.service
-echo consul started
