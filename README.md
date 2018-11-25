@@ -1,8 +1,8 @@
 # nomad-in-a-box
 
-## how to use
+# how to use
 
-### local development on your laptop
+## local development on your laptop
 ```
 vagrant up
 ```
@@ -30,8 +30,15 @@ To reach each of the individual nodes, you can use:
 - vault
 	- vault1 = http://vault1.127.0.0.1.xip.io:8080
 
+### terraform and nomad
 
-### On packet.net
+in `tf_local` there is a terraform project you can use to schedule jobs in the nomad cluster.
+
+This will add 3 jobs in nomad, that using consul-template will create the configuration needed to 
+make the site available at  http://http-echo.127.0.0.1.xip.io:8080
+
+
+## On packet.net
 
 ```
 cd tf_packet
