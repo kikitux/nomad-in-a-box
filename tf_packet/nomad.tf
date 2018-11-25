@@ -23,7 +23,7 @@ data "template_file" "greeting" {
   template = "${file("${path.module}/../nomad_jobs/greeting.tpl")}"
 
   vars {
-    greeting = "Hello from terraform!, my pet is called ${random_pet.mypet.id}"
+    greeting = "Hello from terraform!, my pet name is ${random_pet.mypet.id}"
   }
 }
 
