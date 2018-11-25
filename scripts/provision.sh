@@ -83,6 +83,14 @@ for s in consul{1..3}; do
 
 done
 
+consul_client(){
+  # create dir and copy client.hcl for consul
+  mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
+  cp conf/consul.d/client.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
+  cp conf/consul.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
+  lxc exec ${s} -- bash /var/tmp/consul.sh
+}
+
 # create vault1 - in dev mode, just one
 s=vault1
 lxc info ${s} &>/dev/null || {
@@ -92,11 +100,7 @@ lxc info ${s} &>/dev/null || {
   echo sleeping so ${s} get an IP
   sleep 8
 
-  # create dir and copy client.hcl for consul
-  mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-  cp conf/consul.d/client.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-  cp conf/consul.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
-  lxc exec ${s} -- bash /var/tmp/consul.sh
+  consul_client
 
   # create dir and copy server.hcl for vault
   mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/vault.d
@@ -122,10 +126,7 @@ for s in nomad{1..3}; do
     echo sleeping so ${s} get an IP
     sleep 8
 
-    # create dir and copy client.hcl for consul
-    mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-    cp conf/consul.d/client.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-    cp conf/consul.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
+    consul_client
 
     # create dir and copy server.hcl for nomad
     mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
@@ -155,25 +156,39 @@ which nginx &>/dev/null || {
 cp conf/nginx.conf /etc/nginx/sites-enabled/default
 service nginx restart
 
+# base_client
+s=base_client
+lxc info ${s} &>/dev/null || {
+  echo "copying base into ${s}"
+  lxc copy base ${s}
+  lxc start ${s}
+  echo sleeping so ${s} get an IP
+  sleep 8
+  lxc list ${s}
+  lxc exec ${s} -- apt-get update
+  lxc exec ${s} -- apt-get install --no-install-recommends -y docker.io
+  lxc exec ${s} -- apt-get install --no-install-recommends -y default-jre
+  lxc exec ${s} -- apt-get clean
+  lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hell-world works
+  lxc stop base_client
+}
+
 # clients
 for s in client{1..3}; do
   lxc info ${s} &>/dev/null || {
-    echo "copying base into ${s}"
-    lxc copy base ${s}
+    echo "copying base_client into ${s}"
+    lxc copy base_client ${s}
     lxc start ${s}
     echo sleeping so ${s} get an IP
     sleep 8
     lxc list ${s}
-    lxc exec ${s} -- apt-get update
-    lxc exec ${s} -- apt-get install --no-install-recommends -y docker.io
-    lxc exec ${s} -- apt-get install --no-install-recommends -y default-jre
-    lxc exec ${s} -- apt-get clean
-    lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hell-world works
+    # lxc exec ${s} -- apt-get update
+    # lxc exec ${s} -- apt-get install --no-install-recommends -y docker.io
+    # lxc exec ${s} -- apt-get install --no-install-recommends -y default-jre
+    # lxc exec ${s} -- apt-get clean
+    # lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hell-world works
 
-    # create dir and copy client.hcl for consul
-    mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-    cp conf/consul.d/client.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-    cp conf/consul.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
+    consul_client
        
     # create dir and copy client.hcl for nomad
     mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
@@ -183,7 +198,6 @@ for s in client{1..3}; do
     lxc exec ${s} -- bash /var/tmp/consul.sh
     lxc exec ${s} -- bash /var/tmp/nomad.sh
     echo sleeping so nomad starts, and scan the drivers
-    sleep 5
   }
   
   #clients join servers
@@ -195,4 +209,3 @@ for s in client{1..3}; do
   lxc exec ${s} -- nomad node config -update-servers ${nomad}
 
 done
-
