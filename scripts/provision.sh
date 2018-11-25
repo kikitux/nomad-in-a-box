@@ -146,9 +146,9 @@ echo nomad nomad1 to join other servers
 lxc exec nomad1 -- nomad server join ${nomad}
 
 # configure nginx to expose UI
-which nginx &>/dev/null || {
+which nginx unzip wget &>/dev/null || {
   apt-get update
-  apt-get install --no-install-recommends -y nginx
+  apt-get install --no-install-recommends -y nginx unzip wget
 }
 
 [ -f /etc/nginx/sites-enabled/default ] && rm /etc/nginx/sites-enabled/default
@@ -157,8 +157,7 @@ service nginx restart
 
 [ -f /usr/local/bin/consul-template ] || {
   wget -O /tmp/consul-template.zip https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.zip
-  unzip -d /usr/local/bin consul-template.zip
-  # chmod +x consul-template
+  unzip -d /usr/local/bin /tmp/consul-template.zip
 }
 
 cp -ap conf/consul-template /etc/
