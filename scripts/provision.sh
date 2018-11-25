@@ -145,6 +145,16 @@ done
 echo nomad nomad1 to join other servers
 lxc exec nomad1 -- nomad server join ${nomad}
 
+# configure nginx to expose UI
+which nginx &>/dev/null || {
+  apt-get update
+  apt-get install --no-install-recommends -y nginx
+}
+
+[ -f /etc/nginx/sites-enabled/default ] && rm /etc/nginx/sites-enabled/default
+cp conf/nginx.conf /etc/nginx/sites-enabled/default
+service nginx restart
+
 # clients
 for s in client{1..3}; do
   lxc info ${s} &>/dev/null || {
@@ -186,13 +196,3 @@ for s in client{1..3}; do
 
 done
 
-# configure nginx to expose UI
-which nginx &>/dev/null || {
-  apt-get update
-  apt-get install --no-install-recommends -y nginx
-}
-
-[ -f /etc/nginx/sites-enabled/default ] && rm /etc/nginx/sites-enabled/default
-cp conf/nginx.conf /etc/nginx/sites-enabled/default
-
-service nginx restart
