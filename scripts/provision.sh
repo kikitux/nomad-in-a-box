@@ -23,11 +23,6 @@ which lxd &>/dev/null || {
   service lxd-bridge restart
 }
 
-# vars for join
-consul="10.170.13.11 10.170.13.12 10.170.13.13"
-vault="10.170.13.21"
-nomad="10.170.13.31 10.170.13.32 10.170.13.33"
-
 # create base container
 lxc info base &>/dev/null || {
   lxc launch ubuntu:16.04 base -c security.nesting=true
@@ -130,10 +125,6 @@ for s in nomad{1..3}; do
 
 done
 
-# nomad1 to join nomad2 and nomad3
-echo nomad nomad1 to join other servers
-lxc exec nomad1 -- nomad server join ${nomad}
-
 # configure nginx to expose UI
 which nginx unzip wget &>/dev/null || {
   apt-get update
@@ -167,7 +158,7 @@ lxc info ${s} &>/dev/null || {
   lxc exec ${s} -- apt-get install --no-install-recommends -y docker.io
   lxc exec ${s} -- apt-get install --no-install-recommends -y default-jre
   lxc exec ${s} -- apt-get clean
-  lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hell-world works
+  lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hello-world works
   lxc stop base-client
 }
 
@@ -189,11 +180,6 @@ for s in client{1..3}; do
     cp conf/nomad.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
 
     lxc exec ${s} -- bash /var/tmp/nomad.sh
-    echo sleeping so nomad starts, and scan the drivers
   }
   
-  #clients join servers
-  echo ${s} joining consul servers
-  lxc exec ${s} -- consul join ${consul}
-
  done
