@@ -16,6 +16,7 @@ resource "random_pet" "mypet" {
   keepers = {
     timestamp = "${timestamp()}"
   }
+
   separator = " "
 }
 
