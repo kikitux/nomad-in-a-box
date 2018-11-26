@@ -125,15 +125,20 @@ for s in nomad{1..3}; do
 
 done
 
-# configure nginx to expose UI
-which nginx unzip wget &>/dev/null || {
+# install packages needed on the host
+which haproxy nginx unzip wget &>/dev/null || {
   apt-get update
-  apt-get install --no-install-recommends -y nginx unzip wget
+  apt-get install --no-install-recommends -y haproxy nginx unzip wget
 }
 
+# configure nginx to expose services
 [ -f /etc/nginx/sites-enabled/default ] && rm /etc/nginx/sites-enabled/default
-cp conf/nginx.conf /etc/nginx/sites-enabled/default
+#cp conf/nginx.conf /etc/nginx/sites-enabled/default
 service nginx restart
+
+# configure haproxy to expose ui
+cp conf/haproxy.cfg /etc/haproxy/haproxy.cfg
+service haproxy restart
 
 [ -f /usr/local/bin/consul-template ] || {
   wget -O /tmp/consul-template.zip https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.zip
@@ -143,7 +148,7 @@ service nginx restart
 cp -ap conf/consul-template /etc/
 cp conf/consul-template.service /etc/systemd/system/consul-template.service
 systemctl enable consul-template.service
-systemctl start consul-template.service
+systemctl restart consul-template.service
 
 # base-client
 s=base-client
