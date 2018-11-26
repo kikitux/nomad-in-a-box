@@ -2,12 +2,12 @@ output "info consul" {
   value = "${format("http://consul.%s.xip.io", packet_device.vmonpacket.access_public_ipv4)}"
 }
 
-output "info vault" {
-  value = "${format("http://vault.%s.xip.io", packet_device.vmonpacket.access_public_ipv4)}"
-}
-
 output "info nomad" {
   value = "${format("http://nomad.%s.xip.io", packet_device.vmonpacket.access_public_ipv4)}"
+}
+
+output "info vault" {
+  value = "${format("http://vault.%s.xip.io", packet_device.vmonpacket.access_public_ipv4)}"
 }
 
 output "public_ip" {
