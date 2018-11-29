@@ -7,6 +7,8 @@
 vagrant up
 ```
 
+Vaul root token is `changeme`
+
 Then you can reach the services at
 
 - consul http://localhost:8500
