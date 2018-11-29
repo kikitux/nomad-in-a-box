@@ -7,7 +7,7 @@
 vagrant up
 ```
 
-Vaul root token is `changeme`
+Vault root token is `changeme`
 
 Then you can reach the services at
 

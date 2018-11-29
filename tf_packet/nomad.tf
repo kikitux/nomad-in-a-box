@@ -33,5 +33,5 @@ resource "nomad_job" "greeting" {
 }
 
 output "sample http-echo" {
-  value = "${format("http://http-echo.%s.xip.io", packet_device.vmonpacket.access_public_ipv4)}"
+  value = "${format("http://http-echo.%s.xip.io:8080", packet_device.vmonpacket.access_public_ipv4)}"
 }

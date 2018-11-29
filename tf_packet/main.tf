@@ -1,17 +1,14 @@
-# token variable
 variable "token" {
   description = "packet token"
 }
 
-# project id variable
 variable "projectid" {
   description = "packet project id"
 }
 
-# prefix variable
-variable "prefix" {
-  default     = "alvaro"
-  description = "prefix for names"
+variable "hostname" {
+  default     = "nomad-in-a-box"
+  description = "hostname"
 }
 
 # Configure the Packet Provider
@@ -20,7 +17,7 @@ provider "packet" {
 }
 
 resource "packet_device" "vmonpacket" {
-  hostname         = "${var.prefix}1"
+  hostname         = "${var.hostname}"
   plan             = "baremetal_0"
   facility         = "ams1"
   operating_system = "ubuntu_16_04"
