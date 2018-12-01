@@ -168,7 +168,7 @@ systemctl restart consul-template.service
 wait  # wait for background processes to finish
 
 # clients
-for s in client{1..3}; do
+for s in client{1..4}; do
   lxc info ${s} &>/dev/null || {
     echo "copying base-client into ${s}"
     lxc copy base-client ${s}
