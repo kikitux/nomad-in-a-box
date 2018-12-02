@@ -18,13 +18,15 @@ job "nginx" {
         destination   = "new/index.html"
         change_mode   = "restart"
         data = <<EOH
+<p>
 Hello!
 
-We are running on 
+We are running on<br>
 
-datacenter:    {{ env "node.datacenter" }}
-hostname:    {{ env "attr.unique.hostname" }}
-port:    {{ env "NOMAD_PORT_nginx" }}
+datacenter:    {{ env "node.datacenter" }}<br>
+hostname:    {{ env "attr.unique.hostname" }}<br>
+port:    {{ env "NOMAD_PORT_nginx" }}<br>
+</p>
 EOH
       }
 
