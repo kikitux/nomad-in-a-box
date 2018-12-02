@@ -12,7 +12,7 @@ After=consul.service
 [Service]
 KillMode=process
 KillSignal=SIGINT
-ExecStart=/usr/local/bin/consul-template -consul-addr=http://10.170.13.11:8500 -template "/etc/consul-template/http-echo.ctpl:/etc/nginx/conf.d/http-echo.conf:service nginx reload"
+ExecStart=/usr/local/bin/consul-template -consul-addr=http://10.170.13.11:8500 -template "/etc/consul-template/nginx.ctpl:/etc/nginx/conf.d/nginx.conf:service nginx reload"
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=2
