@@ -7,7 +7,6 @@ CONSUL=1.4.0
 CONSUL_TEMPLATE=0.19.5
 VAULT=0.11.5
 NOMAD=0.8.6
-HTTPECHO=0.2.3
 
 ## END of customization
 
@@ -54,9 +53,6 @@ lxc info base &>/dev/null || {
 
   lxc exec base -- wget -O /tmp/nomad.zip https://releases.hashicorp.com/nomad/${NOMAD}/nomad_${NOMAD}_linux_${ARCH}.zip
   lxc exec base -- unzip -d /usr/local/bin /tmp/nomad.zip
-
-  lxc exec base -- wget -O /tmp/http-echo.zip https://github.com/hashicorp/http-echo/releases/download/v${HTTPECHO}/http-echo_${HTTPECHO}_linux_${ARCH}.zip
-  lxc exec base -- unzip -d /usr/local/bin /tmp/http-echo.zip
 
   lxc stop base
   lxc config set base security.privileged true
