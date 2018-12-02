@@ -14,6 +14,13 @@ HTTPECHO=0.2.3
 # if we are in a vagrant box, lets cd into /vagrant
 [ -d /vagrant ] && pushd /vagrant
 
+# arch
+if [[ "`uname -m`" =~ "arm" ]]; then
+  ARCH=arm
+else
+  ARCH=amd64
+fi
+
 # install and configure lxd
 which lxd &>/dev/null || {
   export DEBIAN_FRONTEND=noninteractive
@@ -39,16 +46,16 @@ lxc info base &>/dev/null || {
   lxc exec base -- apt-get clean
 
   # /tmp cleans on each boot
-  lxc exec base -- wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/${CONSUL}/consul_${CONSUL}_linux_amd64.zip
+  lxc exec base -- wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/${CONSUL}/consul_${CONSUL}_linux_${ARCH}.zip
   lxc exec base -- unzip -d /usr/local/bin /tmp/consul.zip
 
-  lxc exec base -- wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/${VAULT}/vault_${VAULT}_linux_amd64.zip
+  lxc exec base -- wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/${VAULT}/vault_${VAULT}_linux_${ARCH}.zip
   lxc exec base -- unzip -d /usr/local/bin /tmp/vault.zip
 
-  lxc exec base -- wget -O /tmp/nomad.zip https://releases.hashicorp.com/nomad/${NOMAD}/nomad_${NOMAD}_linux_amd64.zip
+  lxc exec base -- wget -O /tmp/nomad.zip https://releases.hashicorp.com/nomad/${NOMAD}/nomad_${NOMAD}_linux_${ARCH}.zip
   lxc exec base -- unzip -d /usr/local/bin /tmp/nomad.zip
 
-  lxc exec base -- wget -O /tmp/http-echo.zip https://github.com/hashicorp/http-echo/releases/download/v${HTTPECHO}/http-echo_${HTTPECHO}_linux_amd64.zip
+  lxc exec base -- wget -O /tmp/http-echo.zip https://github.com/hashicorp/http-echo/releases/download/v${HTTPECHO}/http-echo_${HTTPECHO}_linux_${ARCH}.zip
   lxc exec base -- unzip -d /usr/local/bin /tmp/http-echo.zip
 
   lxc stop base
@@ -156,7 +163,7 @@ cp conf/haproxy.cfg /etc/haproxy/haproxy.cfg
 service haproxy restart
 
 [ -f /usr/local/bin/consul-template ] || {
-  wget -O /tmp/consul-template.zip https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE}/consul-template_${CONSUL_TEMPLATE}_linux_amd64.zip
+  wget -O /tmp/consul-template.zip https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE}/consul-template_${CONSUL_TEMPLATE}_linux_${ARCH}.zip
   unzip -d /usr/local/bin /tmp/consul-template.zip
 }
 
