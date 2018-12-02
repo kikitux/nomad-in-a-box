@@ -25,7 +25,7 @@ fi
 which lxd &>/dev/null || {
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
-  cat conf/selection.conf | debconf-set-selections
+  cat conf/selection.conf | debconf-set-selections &>/dev/null
   apt-get install --no-install-recommends -y vim lxd
   DEBCONF_DB_OVERRIDE='File {conf/config.dat}' dpkg-reconfigure -fnoninteractive -pmedium lxd
   cp conf/lxd-bridge /etc/default/lxd-bridge
