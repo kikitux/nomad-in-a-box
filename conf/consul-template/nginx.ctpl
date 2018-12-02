@@ -1,10 +1,10 @@
-upstream http-echo {
-{{ range service "http-echo" }}  server {{.Address}}:{{.Port}} max_fails=3 fail_timeout=60 weight=1;
+upstream nginx {
+{{ range service "nginx" }}  server {{.Address}}:{{.Port}} max_fails=3 fail_timeout=60 weight=1;
 {{else}}  server 127.0.0.1:65535; # force a 502{{end}}
 }
 server {
  listen 8080;
- server_name http-echo.*;
+ server_name nginx.*;
 
  location / {
    add_header 'Cache-Control' 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
