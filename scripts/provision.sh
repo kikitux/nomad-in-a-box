@@ -5,8 +5,8 @@
 # versions
 CONSUL=1.4.0
 CONSUL_TEMPLATE=0.19.5
-VAULT=0.11.5
 NOMAD=0.8.6
+VAULT=1.0.0
 
 ## END of customization
 
