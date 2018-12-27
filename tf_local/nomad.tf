@@ -4,10 +4,10 @@ provider "nomad" {
   region  = "global"
 }
 
-resource "nomad_job" "nginx" {
-  jobspec = "${file("${path.module}/../nomad_jobs/nginx.hcl")}"
+resource "nomad_job" "hello" {
+  jobspec = "${file("${path.module}/../nomad_jobs/hello.hcl")}"
 }
 
-output "sample nginx" {
-  value = "http://nginx.127.0.0.1.xip.io:8080"
+output "sample hello" {
+  value = "http://hello.127.0.0.1.xip.io:8080"
 }

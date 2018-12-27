@@ -1,8 +1,8 @@
-job "nginx" {
-  datacenters = ["dc1"]
+job "hello" {
+  datacenters = ["dc1","dc2"]
   type = "service"
   group "cache" {
-    count = 3
+    count = 4
     task "nginx" {
       driver = "docker"
       config {
@@ -50,7 +50,7 @@ EOH
       }
 
       service {
-        name = "nginx"
+        name = "hello"
         port = "nginx"
 
         tags = [

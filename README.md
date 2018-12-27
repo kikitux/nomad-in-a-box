@@ -35,6 +35,42 @@ in `tf_local` there is a terraform project you can use to schedule a sample job 
 This will add 1 job in nomad, that using consul-template will create the configuration needed to 
 make the site available at http://nginx.127.0.0.1.xip.io:8080
 
+When this job runs, a service
+
+```
+Hello! We are running on
+datacenter: dc1
+hostname: client1-dc1
+port: 8080
+```
+
+```
+Hello! We are running on
+datacenter: dc1
+hostname: client2-dc1
+port: 8080
+```
+
+```
+Hello! We are running on
+datacenter: dc2
+hostname: client1-dc2
+port: 8080
+```
+
+```
+Hello! We are running on
+datacenter: dc2
+hostname: client2-dc2
+port: 8080
+```
+
+```
+Hello! We are running on
+datacenter: dc1
+hostname: client1-dc1
+port: 8080
+```
 
 ## description
 
