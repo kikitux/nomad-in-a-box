@@ -102,5 +102,24 @@ This projects uses LXD to create containers.
 ```
 
 # Screenshots
+- consul
+![screenshots/consul_dc.png](screenshots/consul_dc.png)
+![screenshots/consul_hello_dc1.png](screenshots/consul_hello_dc1.png)
+![screenshots/consul_hello_dc2.png](screenshots/consul_hello_dc2.png)
+![screenshots/consul_kv_vault.png](screenshots/consul_kv_vault.png)
+![screenshots/consul_nodes_dc1.png](screenshots/consul_nodes_dc1.png)
+![screenshots/consul_nodes_dc2.png](screenshots/consul_nodes_dc2.png)
+![screenshots/consul_nodes_vault.png](screenshots/consul_nodes_vault.png)
+![screenshots/consul_services_dc1.png](screenshots/consul_services_dc1.png)
+![screenshots/consul_services_dc2.png](screenshots/consul_services_dc2.png)
 
+- nomad
+![screenshots/nomad_client_driver.png](screenshots/nomad_client_driver.png)
+![screenshots/nomad_clients.png](screenshots/nomad_clients.png)
+![screenshots/nomad_job_hello.png](screenshots/nomad_job_hello.png)
+![screenshots/nomad_no_job.png](screenshots/nomad_no_job.png)
+![screenshots/nomad_servers.png](screenshots/nomad_servers.png)
 
+- vault
+![screenshots/vault_login.png](screenshots/vault_login.png)
+![screenshots/vault_secret_engine.png](screenshots/vault_secret_engine.png)
