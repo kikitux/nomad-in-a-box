@@ -15,7 +15,7 @@ KillMode=process
 KillSignal=SIGINT
 Environment=VAULT_DEV_ROOT_TOKEN_ID=changeme
 ExecStart=/usr/local/bin/vault server -config=/etc/vault.d/ -dev -dev-listen-address=0.0.0.0:8200
-ExecStartPost=/bin/sleep 5
+ExecStartPost=/bin/sleep 10
 ExecStartPost=/usr/local/bin/vault secrets enable -address=http://127.0.0.1:8200 -version=1 kv
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
