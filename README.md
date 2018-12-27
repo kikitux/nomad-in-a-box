@@ -41,36 +41,8 @@ Website will be available at http://hello.127.0.0.1.xip.io:8080
 
 ```
 Hello! We are running on
-datacenter: dc1
-hostname: client1-dc1
-port: 8080
-```
-
-```
-Hello! We are running on
-datacenter: dc1
-hostname: client2-dc1
-port: 8080
-```
-
-```
-Hello! We are running on
-datacenter: dc2
-hostname: client1-dc2
-port: 8080
-```
-
-```
-Hello! We are running on
-datacenter: dc2
-hostname: client2-dc2
-port: 8080
-```
-
-```
-Hello! We are running on
-datacenter: dc1
-hostname: client1-dc1
+datacenter: dcN
+hostname: clientN-dcN
 port: 8080
 ```
 
