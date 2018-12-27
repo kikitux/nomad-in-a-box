@@ -42,7 +42,7 @@ lxc info base &>/dev/null || {
   cp conf/01_nodoc /var/lib/lxd/containers/base/rootfs/etc/dpkg/dpkg.cfg.d/01_nodoc
   lxc exec base -- apt-get update
   lxc exec base -- apt-get install --no-install-recommends -y wget unzip 
-  lxc exec base -- apt-get clean
+  lxc exec ${s} -- apt-get clean
 
   # /tmp cleans on each boot
   lxc exec base -- wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/${CONSUL}/consul_${CONSUL}_linux_${ARCH}.zip
@@ -82,32 +82,36 @@ lxc info ${s} &>/dev/null || {
 } & #background
 
 # create consul
-for s in consul{1..3}; do
-  lxc info ${s} &>/dev/null || {
-    echo "copying base into ${s}"
-    lxc copy base ${s}
-    lxc start ${s}
-    echo sleeping so ${s} get an IP
-    sleep 8
+# dc1 and dc2
+for dc in dc{1..2}; do
+  # for nodes in each dc
+  for s in consul{1..3}-${dc}; do
+    lxc info ${s} &>/dev/null || {
+      echo "copying base into ${s}"
+      lxc copy base ${s}
+      lxc start ${s}
+      echo sleeping so ${s} get an IP
+      sleep 8
 
-    # create dir and copy server.hcl for consul
-    mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-    cp conf/consul.d/server.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-    cp conf/consul.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
-    lxc exec ${s} -- bash /var/tmp/consul.sh
-  } & # background
-done
+      # create dir and copy server.hcl for consul
+      mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
+      cp conf/consul.d/server-${dc}.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d/server.hcl
+      cp conf/consul.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
+      lxc exec ${s} -- bash /var/tmp/consul.sh
+    } & # background
+  done # end nodes
+done # end dc
 
 consul_client(){
   # create dir and copy client.hcl for consul
   mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
-  cp conf/consul.d/client.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d
+  cp conf/consul.d/client-${dc}.hcl /var/lib/lxd/containers/${s}/rootfs/etc/consul.d/client.hcl
   cp conf/consul.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
   lxc exec ${s} -- bash /var/tmp/consul.sh
 }
 
 # create vault1 - in dev mode, just one
-s=vault1
+s=vault1-dc1
 lxc info ${s} &>/dev/null || {
   echo "copying base into ${s}"
   lxc copy base ${s}
@@ -115,7 +119,9 @@ lxc info ${s} &>/dev/null || {
   echo sleeping so ${s} get an IP
   sleep 8
 
+  dc=dc1       # vault OSS doesn't do replication, so just 1 dc
   consul_client
+  unset dc
 
   # create dir and copy server.hcl for vault
   mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/vault.d
@@ -125,23 +131,27 @@ lxc info ${s} &>/dev/null || {
 } & # background
 
 # create nomad
-for s in nomad{1..3}; do
-  lxc info ${s} &>/dev/null || {
-    echo "copying base into ${s}"
-    lxc copy base ${s}
-    lxc start ${s}
-    echo sleeping so ${s} get an IP
-    sleep 8
+# dc1 and dc2
+for dc in dc{1..2}; do
+  # for nodes in each dc
+  for s in nomad{1..3}-${dc}; do
+    lxc info ${s} &>/dev/null || {
+      echo "copying base into ${s}"
+      lxc copy base ${s}
+      lxc start ${s}
+      echo sleeping so ${s} get an IP
+      sleep 8
 
-    consul_client
+      consul_client
 
-    # create dir and copy server.hcl for nomad
-    mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
-    cp conf/nomad.d/server.hcl /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
-    cp conf/nomad.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
+      # create dir and copy server.hcl for nomad
+      mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
+      cp conf/nomad.d/server-${dc}.hcl /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d/server.hcl
+      cp conf/nomad.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
 
-    lxc exec ${s} -- bash /var/tmp/nomad.sh
-  } & # background
+      lxc exec ${s} -- bash /var/tmp/nomad.sh
+    } & # background
+  done
 done
 
 # install packages needed on the host
@@ -171,22 +181,26 @@ systemctl restart consul-template.service
 wait  # wait for background processes to finish
 
 # clients
-for s in client{1..4}; do
-  lxc info ${s} &>/dev/null || {
-    echo "copying base-client into ${s}"
-    lxc copy base-client ${s}
-    lxc start ${s}
-    echo sleeping so ${s} get an IP
-    sleep 8
+# dc1 and dc2
+for dc in dc{1..2}; do
+  # for nodes in each dc
+  for s in client{1..2}-${dc}; do
+    lxc info ${s} &>/dev/null || {
+      echo "copying base-client into ${s}"
+      lxc copy base-client ${s}
+      lxc start ${s}
+      echo sleeping so ${s} get an IP
+      sleep 8
 
-    consul_client
+      consul_client
        
-    # create dir and copy client.hcl for nomad
-    mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
-    cp conf/nomad.d/client.hcl /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
-    cp conf/nomad.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
+      # create dir and copy client.hcl for nomad
+      mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d
+      cp conf/nomad.d/client-${dc}.hcl /var/lib/lxd/containers/${s}/rootfs/etc/nomad.d/client.hcl
+      cp conf/nomad.service /var/lib/lxd/containers/${s}/rootfs/etc/systemd/system
 
-    lxc exec ${s} -- bash /var/tmp/nomad.sh
-  } & # background
+      lxc exec ${s} -- bash /var/tmp/nomad.sh
+    } & # background
+  done
 done
 wait  # wait for background processes to finish
