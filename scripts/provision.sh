@@ -41,8 +41,11 @@ lxc info base &>/dev/null || {
   mkdir -p /var/lib/lxd/containers/base/rootfs/etc/dpkg/dpkg.cfg.d/
   cp conf/01_nodoc /var/lib/lxd/containers/base/rootfs/etc/dpkg/dpkg.cfg.d/01_nodoc
   lxc exec base -- apt-get update
-  lxc exec base -- apt-get install --no-install-recommends -y wget unzip 
+  lxc exec base -- apt-get install --no-install-recommends -y wget unzip dnsmasq
   lxc exec ${s} -- apt-get clean
+
+  # dnsmasq to use consul dns
+  cp conf/dnsmasq.d/consul /var/lib/lxd/containers/base/rootfs/etc/dnsmasq.d/10-consul
 
   # /tmp cleans on each boot
   lxc exec base -- wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/${CONSUL}/consul_${CONSUL}_linux_${ARCH}.zip
