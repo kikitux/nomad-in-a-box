@@ -32,10 +32,12 @@ Vault is running on dev mode in dc1, so you can access the service as:
 
 in `tf_local` there is a terraform project you can use to schedule a sample job in the nomad cluster with Terraform.
 
-This will add 1 job in nomad, that using consul-template will create the configuration needed to 
-make the site available at http://nginx.127.0.0.1.xip.io:8080
+When this job runs:
+- a job named hello will run in nomad, count 4, with a basic webpage
+- a service named `hello` will be registered in consul
+- consul-template will configure nginx on port 8080 on the VM
 
-When this job runs, a service
+Website will be available at http://hello.127.0.0.1.xip.io:8080
 
 ```
 Hello! We are running on
