@@ -21,6 +21,13 @@ Or you can also use:
 - nomad  http://nomad.127.0.0.1.xip.io:8000
 - vault  http://vault.127.0.0.1.xip.io:8000
 
+### vault
+
+Vault is running on dev mode in dc1, so you can access the service as:
+
+- `vault.service.consul` in the dc1
+- `vault.service.dc1.consul` in the dc2
+
 ### terraform and nomad
 
 in `tf_local` there is a terraform project you can use to schedule a sample job in the nomad cluster with Terraform.
