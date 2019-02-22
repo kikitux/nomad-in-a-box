@@ -21,6 +21,74 @@ Or you can also use:
 - nomad  http://nomad.127.0.0.1.xip.io:8000
 - vault  http://vault.127.0.0.1.xip.io:8000
 
+## operation
+
+Use this project as a black box, or inspiration how to setup a dev environment
+
+### Up
+
+```bash
+0 kikitux nomad-in-a-box (master) $ time vagrant up
+..
+real	4m35,484s
+user	0m7,809s
+sys	0m2,528s
+0 kikitux nomad-in-a-box (master) $
+```
+
+### Suspend
+
+Vagrant can suspend the running VM, ie a laptop sleeping/hybernating
+
+```
+0 kikitux nomad-in-a-box (master) $ vagrant suspend
+==> default: Saving VM state and suspending execution...
+0 kikitux nomad-in-a-box (master) $ time vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Checking if box 'alvaro/bionic64' version '18.01.04' is up to date...
+==> default: Resuming suspended VM...
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+==> default: Machine booted and ready!
+==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+==> default: flag to force provisioning. Provisioners marked to run always will still run.
+
+real	0m26,084s
+user	0m2,347s
+sys	0m1,122s
+0 kikitux nomad-in-a-box (master) $ 
+```
+
+### Restart
+
+Once provision our VM can be stopped and started, and the LXC containers will start automatically.
+
+```bash
+0 kikitux nomad-in-a-box (master *) $  vagrant halt
+==> default: Attempting graceful shutdown of VM...
+==> default: Forcing shutdown of VM...
+0 kikitux nomad-in-a-box (master *) $ time vagrant up
+..
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+..
+==> default: Machine booted and ready!
+==> default: Checking for guest additions in VM...
+==> default: Setting hostname...
+==> default: Mounting shared folders...
+    default: /vagrant => /home/kikitux/Dropbox/local/nuc8/nomad-in-a-box
+..
+
+real	0m27,165s
+user	0m3,291s
+sys	0m1,676s
+0 kikitux nomad-in-a-box (master *) $ 
+```
+
+
 ### vault
 
 Vault is running on dev mode in dc1, so you can access the service as:
