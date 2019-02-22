@@ -1,3 +1,6 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 info = <<-'EOF'
 
 
@@ -18,8 +21,8 @@ vault http://vault.127.0.0.1.xip.io:8000
 EOF
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "alvaro/xenial64"
-
+  config.vm.box = "alvaro/bionic64"
+  config.vm.hostname = "bionic64"
 
   config.vm.network "forwarded_port", guest: 8000, host: 8000
   config.vm.network "forwarded_port", guest: 8080, host: 8080

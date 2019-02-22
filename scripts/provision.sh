@@ -24,14 +24,14 @@ fi
 which lxd &>/dev/null || {
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
-  apt-get install -t xenial-backports -y lxd
+  apt-get install -t bionic-backports -y lxd
   lxd init --preseed < conf/lxd_init.yml
 }
 
 # create base container
 s=base
 lxc info ${s} &>/dev/null || {
-  lxc launch ubuntu:18.04 ${s} -c security.nesting=true
+  lxc launch ubuntu:bionic ${s} -c security.nesting=true
   echo sleeping so ${s} can boot properly
   sleep 8
   mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/dpkg/dpkg.cfg.d/
