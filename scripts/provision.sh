@@ -31,7 +31,7 @@ which lxd &>/dev/null || {
 # create base container
 s=base
 lxc info ${s} &>/dev/null || {
-  lxc launch ubuntu:16.04 ${s} -c security.nesting=true
+  lxc launch ubuntu:18.04 ${s} -c security.nesting=true
   echo sleeping so ${s} can boot properly
   sleep 8
   mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/dpkg/dpkg.cfg.d/
