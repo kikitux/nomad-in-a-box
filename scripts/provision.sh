@@ -4,9 +4,9 @@
 
 # versions
 CONSUL=1.4.2
-CONSUL_TEMPLATE=0.19.5
-NOMAD=0.8.6
-VAULT=1.0.0
+CONSUL_TEMPLATE=0.20.0
+NOMAD=0.8.7
+VAULT=1.0.3
 
 ## END of customization
 
@@ -37,7 +37,7 @@ lxc info ${s} &>/dev/null || {
   mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/dpkg/dpkg.cfg.d/
   cp conf/01_nodoc /var/lib/lxd/containers/${s}/rootfs/etc/dpkg/dpkg.cfg.d/01_nodoc
   lxc exec ${s} -- apt-get update
-  lxc exec ${s} -- apt-get install --no-install-recommends -y wget unzip dnsmasq
+  lxc exec --env DEBIAN_FRONTEND=noninteractive ${s} -- apt-get install --no-install-recommends -y wget unzip dnsmasq
   lxc exec ${s} -- apt-get clean
 
   # dnsmasq to use consul dns
@@ -73,8 +73,8 @@ lxc info ${s} &>/dev/null || {
   echo sleeping so ${s} can boot properly
   sleep 8
   lxc exec ${s} -- apt-get update
-  lxc exec ${s} -- apt-get install --no-install-recommends -y docker.io
-  lxc exec ${s} -- apt-get install --no-install-recommends -y default-jre
+  lxc exec --env DEBIAN_FRONTEND=noninteractive ${s} -- apt-get install --no-install-recommends -y docker.io
+  lxc exec --env DEBIAN_FRONTEND=noninteractive ${s} -- apt-get install --no-install-recommends -y default-jre
   lxc exec ${s} -- apt-get clean
   lxc exec ${s} -- docker run hello-world &>/dev/null && echo docker hello-world works
   lxc stop base-client
@@ -187,6 +187,7 @@ done
 
 # install packages needed on the host
 which haproxy nginx unzip wget &>/dev/null || {
+  export DEBIAN_FRONTEND=noninteractive
   apt-get update
   apt-get install --no-install-recommends -y haproxy nginx unzip wget
 }
