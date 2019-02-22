@@ -82,29 +82,24 @@ lxc info ${s} &>/dev/null || {
 
 # ip range
 declare -A IP
-IP[consul1-dc1]=10.170.13.11
-IP[consul2-dc1]=10.170.13.12
-IP[consul3-dc1]=10.170.13.13
 IP[vault1-dc1]=10.170.13.21
-IP[nomad1-dc1]=10.170.13.31
-IP[nomad2-dc1]=10.170.13.32
-IP[nomad3-dc1]=10.170.13.33
-IP[client1-dc1]=10.170.13.41
-IP[client2-dc1]=10.170.13.42
-IP[client3-dc1]=10.170.13.43
-IP[client4-dc1]=10.170.13.44
-IP[client5-dc1]=10.170.13.45
-IP[consul1-dc2]=10.170.14.11
-IP[consul2-dc2]=10.170.14.12
-IP[consul3-dc2]=10.170.14.13
-IP[nomad1-dc2]=10.170.14.31
-IP[nomad2-dc2]=10.170.14.32
-IP[nomad3-dc2]=10.170.14.33
-IP[client1-dc2]=10.170.14.41
-IP[client2-dc2]=10.170.14.42
-IP[client3-dc2]=10.170.14.43
-IP[client4-dc2]=10.170.14.44
-IP[client5-dc2]=10.170.14.45
+
+for i in {1..3}; do
+
+  let ip=10+i
+  IP[consul${i}-dc1]=10.170.13.${ip}
+  IP[consul${i}-dc2]=10.170.14.${ip}
+
+  let ip=30+i
+  IP[nomad${i}-dc1]=10.170.13.${ip}
+  IP[nomad${i}-dc2]=10.170.14.${ip}
+
+  let ip=40+i
+  IP[client${i}-dc1]=10.170.13.${ip}
+  IP[client${i}-dc2]=10.170.14.${ip}
+
+done
+
 
 # create consul
 # dc1 and dc2
