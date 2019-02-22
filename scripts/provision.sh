@@ -29,31 +29,32 @@ which lxd &>/dev/null || {
 }
 
 # create base container
-lxc info base &>/dev/null || {
-  lxc launch ubuntu:16.04 base -c security.nesting=true
-  echo sleeping so base get an IP
+s=base
+lxc info ${s} &>/dev/null || {
+  lxc launch ubuntu:16.04 ${s} -c security.nesting=true
+  echo sleeping so ${s} can boot properly
   sleep 8
-  mkdir -p /var/lib/lxd/containers/base/rootfs/etc/dpkg/dpkg.cfg.d/
-  cp conf/01_nodoc /var/lib/lxd/containers/base/rootfs/etc/dpkg/dpkg.cfg.d/01_nodoc
-  lxc exec base -- apt-get update
-  lxc exec base -- apt-get install --no-install-recommends -y wget unzip dnsmasq
+  mkdir -p /var/lib/lxd/containers/${s}/rootfs/etc/dpkg/dpkg.cfg.d/
+  cp conf/01_nodoc /var/lib/lxd/containers/${s}/rootfs/etc/dpkg/dpkg.cfg.d/01_nodoc
+  lxc exec ${s} -- apt-get update
+  lxc exec ${s} -- apt-get install --no-install-recommends -y wget unzip dnsmasq
   lxc exec ${s} -- apt-get clean
 
   # dnsmasq to use consul dns
-  cp conf/dnsmasq.d/consul /var/lib/lxd/containers/base/rootfs/etc/dnsmasq.d/10-consul
+  cp conf/dnsmasq.d/consul /var/lib/lxd/containers/${s}/rootfs/etc/dnsmasq.d/10-consul
 
   # /tmp cleans on each boot
-  lxc exec base -- wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/${CONSUL}/consul_${CONSUL}_linux_${ARCH}.zip
-  lxc exec base -- unzip -d /usr/local/bin /tmp/consul.zip
+  lxc exec ${s} -- wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/${CONSUL}/consul_${CONSUL}_linux_${ARCH}.zip
+  lxc exec ${s} -- unzip -d /usr/local/bin /tmp/consul.zip
 
-  lxc exec base -- wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/${VAULT}/vault_${VAULT}_linux_${ARCH}.zip
-  lxc exec base -- unzip -d /usr/local/bin /tmp/vault.zip
+  lxc exec ${s} -- wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/${VAULT}/vault_${VAULT}_linux_${ARCH}.zip
+  lxc exec ${s} -- unzip -d /usr/local/bin /tmp/vault.zip
 
-  lxc exec base -- wget -O /tmp/nomad.zip https://releases.hashicorp.com/nomad/${NOMAD}/nomad_${NOMAD}_linux_${ARCH}.zip
-  lxc exec base -- unzip -d /usr/local/bin /tmp/nomad.zip
+  lxc exec ${s} -- wget -O /tmp/nomad.zip https://releases.hashicorp.com/nomad/${NOMAD}/nomad_${NOMAD}_linux_${ARCH}.zip
+  lxc exec ${s} -- unzip -d /usr/local/bin /tmp/nomad.zip
 
-  lxc stop base
-  lxc config set base security.privileged true
+  lxc stop ${s}
+  lxc config set ${s} security.privileged true
 }
 
 # copy scripts to all existing nodes
@@ -69,7 +70,7 @@ lxc info ${s} &>/dev/null || {
   echo "copying base into ${s}"
   lxc copy base ${s}
   lxc start ${s}
-  echo sleeping so ${s} get an IP
+  echo sleeping so ${s} can boot properly
   sleep 8
   lxc exec ${s} -- apt-get update
   lxc exec ${s} -- apt-get install --no-install-recommends -y docker.io
@@ -116,7 +117,7 @@ for dc in dc{1..2}; do
       lxc network attach lxdbr0 ${s} eth0 eth0
       lxc config device set ${s} eth0 ipv4.address ${IP[${s}]}
       lxc start ${s}
-      echo sleeping so ${s} get an IP
+      echo sleeping so ${s} can boot properly
       sleep 4
 
       # create dir and copy server.hcl for consul
@@ -144,7 +145,7 @@ lxc info ${s} &>/dev/null || {
   lxc network attach lxdbr0 ${s} eth0 eth0
   lxc config device set ${s} eth0 ipv4.address ${IP[${s}]}
   lxc start ${s}
-  echo sleeping so ${s} get an IP
+  echo sleeping so ${s} can boot properly
   sleep 4
 
   dc=dc1       # vault OSS doesn't do replication, so just 1 dc
@@ -169,7 +170,7 @@ for dc in dc{1..2}; do
       lxc network attach lxdbr0 ${s} eth0 eth0
       lxc config device set ${s} eth0 ipv4.address ${IP[${s}]}
       lxc start ${s}
-      echo sleeping so ${s} get an IP
+      echo sleeping so ${s} can boot properly
       sleep 4
 
       consul_client
@@ -221,7 +222,7 @@ for dc in dc{1..2}; do
       lxc network attach lxdbr0 ${s} eth0 eth0
       lxc config device set ${s} eth0 ipv4.address ${IP[${s}]}
       lxc start ${s}
-      echo sleeping so ${s} get an IP
+      echo sleeping so ${s} can boot properly
       sleep 4
 
       consul_client
