@@ -3,6 +3,7 @@ Description=Vault
 Documentation=https://www.vaultproject.io/docs/
 Wants=network-online.target
 After=network-online.target
+StartLimitIntervalSec=10
 
 # If you are running Consul, please uncomment following Wants/After configs.
 # Assuming your Consul service unit name is "consul"
@@ -21,7 +22,6 @@ ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=2
 StartLimitBurst=3
-StartLimitIntervalSec=10
 LimitNOFILE=65536
 
 [Install]
