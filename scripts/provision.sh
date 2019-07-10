@@ -3,10 +3,13 @@
 ## BEGIN of customization
 
 # versions
-CONSUL=1.4.2
+#CONSUL=1.4.2
+CONSUL=1.5.1
 CONSUL_TEMPLATE=0.20.0
-NOMAD=0.8.7
-VAULT=1.0.3
+#NOMAD=0.8.7
+NOMAD=0.9.3
+VAULT=1.1.3
+#VAULT=1.0.3
 
 ## END of customization
 
